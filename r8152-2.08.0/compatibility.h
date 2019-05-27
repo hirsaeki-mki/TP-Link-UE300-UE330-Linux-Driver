@@ -9,6 +9,11 @@
 #include <linux/version.h>
 #include <linux/in.h>
 
+#if (defined(RHEL_RELEASE_CODE) && \
+	(RHEL_RELEASE_CODE >= RHEL_RELEASE_VERSION(7, 5)))
+#define ndo_change_mtu ndo_change_mtu_rh74
+#endif
+
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
 	#include <linux/mdio.h>
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(3,7,0)
@@ -18,7 +23,7 @@
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(4,5,0)
 	#define NETIF_F_CSUM_MASK			NETIF_F_ALL_CSUM
-#if LINUX_VERSION_CODE < KERNEL_VERSION(4,0,0)
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,10,0)
 	#define skb_vlan_tag_present(__skb)		vlan_tx_tag_present(__skb)
 	#define skb_vlan_tag_get(__skb)			vlan_tx_tag_get(__skb)
 	#define skb_vlan_tag_get_id(__skb)		vlan_tx_tag_get_id(__skb)
